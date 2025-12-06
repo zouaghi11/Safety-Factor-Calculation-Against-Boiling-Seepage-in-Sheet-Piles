@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheet Pile Safety Theory</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="main-header">
+<div class="header-content">
+<div class="logo">
+<i class="fas fa-book"></i>
+<h1>Sheet Pile Safety Theory & Formulas</h1>
+</div>
+<div class="header-actions">
+<a href="index.html" class="btn btn-outline">
+<i class="fas fa-calculator"></i> Back to Calculator
+</a>
+<button id="themeToggle" class="theme-toggle">
+<i class="fas fa-moon"></i>
+</button>
+</div>
+</div>
+</header>
+
+<div class="container-theory">
+<section>
+<h2><i class="fas fa-info-circle"></i> 1. Introduction</h2>
+<p>Boiling (or piping) is a critical failure mechanism in geotechnical engineering where upward seepage forces exceed the effective weight of soil, causing soil particles to become buoyant and lose stability. This phenomenon is particularly important in sheet pile design for:</p>
+<ul>
+<li>Cofferdams and excavation support systems</li>
+<li>Waterfront structures and retaining walls</li>
+<li>Foundation protection during dewatering</li>
+<li>Dam and levee design</li>
+</ul>
+<p>The safety factor against boiling is a key design parameter ensuring structural stability under seepage conditions.</p>
+</section>
+
+<section>
+<h2><i class="fas fa-calculator"></i> 2. Fundamental Equations</h2>
+
+<div class="formula-box">
+<h3>Actual Hydraulic Gradient (i_actual)</h3>
+<div class="formula">
+i<sub>actual</sub> = Δh / L
+</div>
+<p>Where:</p>
+<ul>
+<li>Δh = Hydraulic head difference across the flow path (m)</li>
+<li>L = Length of seepage path (m)</li>
+</ul>
+</div>
+
+<div class="formula-box">
+<h3>Critical Hydraulic Gradient (i_critical)</h3>
+<div class="formula">
+i<sub>critical</sub> = (γ<sub>sat</sub> - γ<sub>w</sub>) / γ<sub>w</sub>
+</div>
+<p>Where:</p>
+<ul>
+<li>γ<sub>sat</sub> = Saturated unit weight of soil (kN/m³)</li>
+<li>γ<sub>w</sub> = Unit weight of water (9.81 kN/m³)</li>
+</ul>
+<p><strong>Note:</strong> For typical soils, i_critical ranges from 0.9 to 1.2.</p>
+</div>
+
+<div class="formula-box">
+<h3>Safety Factor Against Boiling (FS)</h3>
+<div class="formula">
+FS = i<sub>critical</sub> / i<sub>actual</sub>
+</div>
+<p>Design criteria:</p>
+<ul>
+<li><strong>FS ≥ 1.5:</strong> Safe design (recommended)</li>
+<li><strong>1.0 ≤ FS < 1.5:</strong> Marginal safety (monitoring required)</li>
+<li><strong>FS < 1.0:</strong> Unsafe (boiling likely to occur)</li>
+</ul>
+</div>
+
+<div class="formula-box">
+<h3>Flow Rate (Darcy's Law)</h3>
+<div class="formula">
+Q = k × A × i
+</div>
+<p>Where:</p>
+<ul>
+<li>Q = Flow rate (m³/s)</li>
+<li>k = Hydraulic conductivity (m/s)</li>
+<li>A = Cross-sectional area of flow (m²)</li>
+<li>i = Hydraulic gradient</li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2><i class="fas fa-project-diagram"></i> 3. Physical Mechanism</h2>
+<div class="diagram-explain">
+<h3>Seepage Forces and Effective Stress</h3>
+<p>When water flows upward through soil:</p>
+<ol>
+<li>Seepage force per unit volume: j = γ_w × i</li>
+<li>Total upward force: F_up = j × Volume</li>
+<li>Effective weight of soil: W' = (γ_sat - γ_w) × Volume</li>
+<li>Boiling occurs when: F_up ≥ W'</li>
+</ol>
+
+<h3>Typical Soil Properties</h3>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Soil Type</th>
+<th>γ_sat (kN/m³)</th>
+<th>i_critical</th>
+<th>Typical k (m/s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gravel</td>
+<td>20-22</td>
+<td>1.0-1.2</td>
+<td>10⁻² - 10⁻³</td>
+</tr>
+<tr>
+<td>Sand</td>
+<td>18-20</td>
+<td>0.9-1.1</td>
+<td>10⁻³ - 10⁻⁵</td>
+</tr>
+<tr>
+<td>Silt</td>
+<td>17-19</td>
+<td>0.8-1.0</td>
+<td>10⁻⁵ - 10⁻⁷</td>
+</tr>
+<tr>
+<td>Clay</td>
+<td>16-18</td>
+<td>0.7-0.9</td>
+<td>10⁻⁷ - 10⁻⁹</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section>
+<h2><i class="fas fa-exclamation-triangle"></i> 4. Failure Prevention</h2>
+<h3>Increasing Safety Factor:</h3>
+<div class="prevention-methods">
+<div class="method">
+<h4><i class="fas fa-ruler-combined"></i> Increase Flow Path Length</h4>
+<p>Lengthen seepage path by:</p>
+<ul>
+<li>Increasing sheet pile penetration depth</li>
+<li>Using deeper cutoff walls</li>
+<li>Adding impervious blankets</li>
+</ul>
+</div>
+
+<div class="method">
+<h4><i class="fas fa-water"></i> Reduce Hydraulic Head</h4>
+<p>Decrease Δh through:</p>
+<ul>
+<li>Installation of drainage systems</li>
+<li>Relief wells</li>
+<li>Proper dewatering techniques</li>
+</ul>
+</div>
+
+<div class="method">
+<h4><i class="fas fa-layer-group"></i> Soil Improvement</h4>
+<p>Enhance soil properties by:</p>
+<ul>
+<li>Using denser backfill materials</li>
+<li>Soil compaction</li>
+<li>Geotextile filters</li>
+<li>Gravel drains</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<h2><i class="fas fa-flask"></i> 5. Example Calculation</h2>
+<div class="example-case">
+<h3>Given Parameters:</h3>
+<ul>
+<li>γ_sat = 20 kN/m³</li>
+<li>γ_w = 9.81 kN/m³</li>
+<li>Δh = 8.5 m</li>
+<li>L = 12 m</li>
+<li>A = 1 m² (optional)</li>
+<li>k = 0.001 m/s (optional)</li>
+</ul>
+
+<h3>Step-by-Step Solution:</h3>
+<ol>
+<li>i_actual = Δh / L = 8.5 / 12 = <strong>0.708</strong></li>
+<li>i_critical = (γ_sat - γ_w) / γ_w = (20 - 9.81) / 9.81 = <strong>1.039</strong></li>
+<li>FS = i_critical / i_actual = 1.039 / 0.708 = <strong>1.47</strong></li>
+<li>Q = k × A × i = 0.001 × 1 × 0.708 = <strong>7.08 × 10⁻⁴ m³/s</strong></li>
+</ol>
+
+<div class="interpretation">
+<h4><i class="fas fa-clipboard-check"></i> Interpretation:</h4>
+<p>FS = 1.47 indicates marginal safety. The structure is near the threshold of safety and requires monitoring or improvement measures.</p>
+</div>
+</div>
+</section>
+
+<section>
+<h2><i class="fas fa-book"></i> 6. References & Standards</h2>
+<div class="references">
+<ul>
+<li><strong>Terzaghi, K., and Peck, R.B.</strong> (1967) "Soil Mechanics in Engineering Practice"</li>
+<li><strong>Das, B.M.</strong> (2010) "Principles of Geotechnical Engineering"</li>
+<li><strong>U.S. Army Corps of Engineers</strong> (1993) "Engineering and Design: Seepage Analysis and Control for Dams"</li>
+<li><strong>British Standards Institution</strong> (2004) "BS 8002: Code of practice for earth retaining structures"</li>
+<li><strong>NAVFAC</strong> (1986) "Design Manual 7.02: Foundations and Earth Structures"</li>
+</ul>
+
+<h3>Design Codes:</h3>
+<ul>
+<li>Eurocode 7: Geotechnical design</li>
+<li>ASCE/SEI 7-16: Minimum design loads</li>
+<li>API RP 2A-WSD: Planning, designing fixed offshore platforms</li>
+</ul>
+</div>
+</section>
+
+<div class="navigation-buttons">
+<a href="index.html" class="btn btn-primary">
+<i class="fas fa-arrow-left"></i> Back to Calculator
+</a>
+<button class="btn btn-secondary" onclick="window.print()">
+<i class="fas fa-print"></i> Print This Page
+</button>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
