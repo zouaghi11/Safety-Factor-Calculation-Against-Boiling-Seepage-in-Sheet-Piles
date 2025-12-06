@@ -1,236 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sheet Pile Safety Factor Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheet Pile Safety Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 </head>
 <body>
-<header class="main-header">
-<div class="header-content">
-<div class="logo">
-<i class="fas fa-shield-alt"></i>
-<h1>Sheet Pile Safety Analyzer</h1>
-</div>
-<div class="header-actions">
-<a href="theory.html" class="btn btn-outline">
-<i class="fas fa-book"></i> Theory & Formulas
-</a>
-<a href="#report" class="btn btn-outline">
-<i class="fas fa-file-pdf"></i> Generate Report
-</a>
-<button id="themeToggle" class="theme-toggle">
-<i class="fas fa-moon"></i>
-</button>
-</div>
-</div>
-</header>
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-calculator"></i>
+                <h1>Sheet Pile Safety Calculator</h1>
+            </div>
+            <div class="header-actions">
+                <a href="theory.html" class="btn btn-outline">
+                    <i class="fas fa-book"></i> Theory & Formulas
+                </a>
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<div class="app-container">
-<!-- Left Panel: Input & Diagram -->
-<div class="left-panel">
-<div class="input-section card">
-<h2><i class="fas fa-calculator"></i> Input Parameters</h2>
+    <div class="app-container">
+        <!-- Left Column: Input Parameters -->
+        <div class="input-section card">
+            <h2><i class="fas fa-sliders-h"></i> Input Parameters</h2>
+            
+            <div class="input-group">
+                <label for="gamma_sat">
+                    <i class="fas fa-weight-hanging"></i>
+                    γ_sat (Saturated Unit Weight)
+                    <span class="tooltip-container">
+                        <i class="fas fa-question-circle tooltip-icon"></i>
+                        <span class="tooltip-text">
+                            The saturated unit weight of soil including water in voids.
+                            Typical values: Sand (18-20 kN/m³), Clay (16-18 kN/m³)
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="gamma_sat" value="20" step="0.1" min="10" max="25">
+                <span class="unit">kN/m³</span>
+            </div>
 
-<div class="input-group">
-<label for="gamma_sat">
-<i class="fas fa-weight-hanging"></i>
-Saturated Unit Weight (γ_sat)
-<span class="unit">kN/m³</span>
-</label>
-<input type="number" id="gamma_sat" value="20" step="0.1" min="10" max="25">
-<div class="input-note">Typical range: 18-22 kN/m³</div>
-</div>
+            <div class="input-group">
+                <label for="gamma_w">
+                    <i class="fas fa-tint"></i>
+                    γ_w (Unit Weight of Water)
+                    <span class="tooltip-container">
+                        <i class="fas fa-question-circle tooltip-icon"></i>
+                        <span class="tooltip-text">
+                            Unit weight of water. Standard value is 9.81 kN/m³.
+                            May vary slightly with temperature and impurities.
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="gamma_w" value="9.81" step="0.01" min="9.5" max="10">
+                <span class="unit">kN/m³</span>
+            </div>
 
-<div class="input-group">
-<label for="gamma_w">
-<i class="fas fa-tint"></i>
-Unit Weight of Water (γ_w)
-<span class="unit">kN/m³</span>
-</label>
-<input type="number" id="gamma_w" value="9.81" step="0.01" min="9.5" max="10">
-<div class="input-note">Standard: 9.81 kN/m³</div>
-</div>
+            <div class="input-group">
+                <label for="delta_h">
+                    <i class="fas fa-ruler-vertical"></i>
+                    Δh (Head Difference)
+                    <span class="tooltip-container">
+                        <i class="fas fa-question-circle tooltip-icon"></i>
+                        <span class="tooltip-text">
+                            Hydraulic head difference between upstream and downstream sides.
+                            Represents the driving force for seepage flow.
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="delta_h" value="8.5" step="0.1" min="0.1" max="50">
+                <span class="unit">m</span>
+                
+                <div class="range-slider-container">
+                    <input type="range" id="delta_h_slider" min="1" max="20" step="0.1" value="8.5">
+                    <div class="slider-values">
+                        <span>1 m</span>
+                        <span id="deltaHValue">8.5 m</span>
+                        <span>20 m</span>
+                    </div>
+                </div>
+            </div>
 
-<div class="input-group">
-<label for="delta_h">
-<i class="fas fa-water"></i>
-Hydraulic Head Difference (Δh)
-<span class="unit">m</span>
-</label>
-<input type="number" id="delta_h" value="8.5" step="0.1" min="1" max="50">
-<div class="range-slider-container">
-<input type="range" id="delta_h_slider" min="1" max="50" value="8.5" step="0.1">
-<div class="slider-values">
-<span>1m</span>
-<span>50m</span>
-</div>
-</div>
-</div>
+            <div class="input-group">
+                <label for="flow_path">
+                    <i class="fas fa-road"></i>
+                    L (Flow Path Length)
+                    <span class="tooltip-container">
+                        <i class="fas fa-question-circle tooltip-icon"></i>
+                        <span class="tooltip-text">
+                            Length of seepage path beneath the sheet pile.
+                            Longer paths provide more resistance to seepage.
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="flow_path" value="12" step="0.1" min="1" max="50">
+                <span class="unit">m</span>
+            </div>
 
-<div class="input-group">
-<label for="flow_path">
-<i class="fas fa-route"></i>
-Flow Path Length (L)
-<span class="unit">m</span>
-</label>
-<input type="number" id="flow_path" value="12" step="0.1" min="1" max="100">
-</div>
+            <div class="input-group">
+                <label for="area">
+                    <i class="fas fa-expand-alt"></i>
+                    A (Cross-sectional Area)
+                    <span class="tooltip-container">
+                        <i class="fas fa-question-circle tooltip-icon"></i>
+                        <span class="tooltip-text">
+                            Cross-sectional area perpendicular to flow direction.
+                            Used for flow rate calculation (optional).
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="area" value="1" step="0.1" min="0.1" max="100">
+                <span class="unit">m²</span>
+                <div class="input-note">Optional - for flow rate calculation</div>
+            </div>
 
-<div class="input-group">
-<label for="area">
-<i class="fas fa-vector-square"></i>
-Cross-sectional Area (A) - Optional
-<span class="unit">m²</span>
-</label>
-<input type="number" id="area" value="1" step="0.1" min="0.1" max="100">
-</div>
+            <div class="input-group">
+                <label for="conductivity">
+                    <i class="fas fa-water"></i>
+                    k (Hydraulic Conductivity)
+                    <span class="tooltip-container">
+                        <i class="fas fa-question-circle tooltip-icon"></i>
+                        <span class="tooltip-text">
+                            Measure of soil's ability to transmit water.
+                            Gravel: 10⁻²-10⁻³ m/s, Sand: 10⁻³-10⁻⁵ m/s,
+                            Silt: 10⁻⁵-10⁻⁷ m/s, Clay: 10⁻⁷-10⁻⁹ m/s
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="conductivity" value="0.001" step="0.0001" min="0.0000001" max="1">
+                <span class="unit">m/s</span>
+                <div class="input-note">Optional - for flow rate calculation</div>
+            </div>
 
-<div class="input-group">
-<label for="conductivity">
-<i class="fas fa-filter"></i>
-Hydraulic Conductivity (k) - Optional
-<span class="unit">m/s</span>
-</label>
-<input type="number" id="conductivity" value="0.001" step="0.0001" min="0.00001" max="0.1">
-<div class="input-note">Range: 10⁻⁵ to 10⁻¹ m/s</div>
-</div>
+            <button class="btn btn-primary btn-calculate" onclick="calculateSafetyFactor()">
+                <i class="fas fa-calculator"></i> Calculate Safety Factor
+            </button>
 
-<button class="btn btn-primary btn-calculate" onclick="calculateSafetyFactor()">
-<i class="fas fa-play-circle"></i> Calculate Safety Factor
-</button>
-<button class="btn btn-secondary" onclick="resetToDefault()">
-<i class="fas fa-redo"></i> Reset to Default
-</button>
-</div>
+            <div class="example-presets">
+                <!-- Example preset buttons will be added by JavaScript -->
+            </div>
 
-<!-- Visual Diagram Section -->
-<div class="diagram-section card">
-<h3><i class="fas fa-project-diagram"></i> Sheet Pile Configuration</h3>
-<div class="diagram-container">
-<svg id="sheetPileDiagram" width="100%" height="200"></svg>
-</div>
-<div class="diagram-legend">
-<div class="legend-item">
-<span class="legend-color" style="background-color: #6c757d;"></span>
-<span>Soil Layer</span>
-</div>
-<div class="legend-item">
-<span class="legend-color" style="background-color: #007bff;"></span>
-<span>Water Flow</span>
-</div>
-<div class="legend-item">
-<span class="legend-color" style="background-color: #dc3545;"></span>
-<span>Sheet Pile</span>
-</div>
-</div>
-</div>
-</div>
+            <div class="save-load-buttons">
+                <button class="btn btn-success" onclick="saveCalculation()">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <button class="btn btn-secondary" onclick="loadSavedCalculation()">
+                    <i class="fas fa-folder-open"></i> Load
+                </button>
+                <button class="btn btn-danger" onclick="clearSavedCalculation()">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
+            </div>
 
-<!-- Right Panel: Results & Visualization -->
-<div class="right-panel">
-<!-- Safety Factor Display -->
-<div class="results-section card">
-<div class="results-header">
-<h2><i class="fas fa-clipboard-check"></i> Analysis Results</h2>
-<div class="status-badge" id="safetyStatus">Pending</div>
-</div>
+            <button class="btn btn-secondary" onclick="resetToDefault()">
+                <i class="fas fa-redo"></i> Reset to Default
+            </button>
+        </div>
 
-<div class="safety-factor-display">
-<div class="fs-value-container">
-<div class="fs-label">Safety Factor (FS)</div>
-<div class="fs-value" id="fsValue">-</div>
-<div class="fs-formula">FS = i_critical / i_actual</div>
-</div>
+        <!-- Right Column: Results and Visualizations -->
+        <div class="results-visualization">
+            <!-- Diagram Section -->
+            <div class="diagram-section card">
+                <h3><i class="fas fa-project-diagram"></i> Sheet Pile Diagram</h3>
+                <div class="diagram-container">
+                    <svg id="sheetPileDiagram" width="100%" height="100%"></svg>
+                </div>
+                <div class="diagram-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #3498db;"></div>
+                        <span>Water Flow</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #27ae60;"></div>
+                        <span>Head Difference (Δh)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #6c757d;"></div>
+                        <span>Sheet Pile</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #8B7355;"></div>
+                        <span>Soil</span>
+                    </div>
+                </div>
+            </div>
 
-<div class="gauge-container">
-<canvas id="safetyGauge"></canvas>
-</div>
-</div>
+            <!-- Results Section -->
+            <div class="results-section card">
+                <div class="results-header">
+                    <h3><i class="fas fa-chart-line"></i> Results</h3>
+                    <div id="safetyStatus" class="status-badge status-pending">Pending</div>
+                </div>
 
-<div class="detailed-results">
-<div class="result-item">
-<span class="result-label">Actual Hydraulic Gradient (i_actual)</span>
-<span class="result-value" id="iActual">-</span>
-</div>
-<div class="result-item">
-<span class="result-label">Critical Hydraulic Gradient (i_critical)</span>
-<span class="result-value" id="iCritical">-</span>
-</div>
-<div class="result-item">
-<span class="result-label">Flow Rate (Q) - Optional</span>
-<span class="result-value" id="flowRate">-</span>
-</div>
-</div>
+                <div class="safety-factor-display">
+                    <div class="fs-value-container">
+                        <div class="fs-label">Safety Factor (FS)</div>
+                        <div class="fs-value" id="fsValue">-</div>
+                        <div class="fs-formula">i_critical / i_actual</div>
+                    </div>
+                    <div class="gauge-container">
+                        <canvas id="safetyGauge"></canvas>
+                    </div>
+                </div>
 
-<div class="recommendations" id="recommendations">
-<h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
-<p>Enter parameters and click "Calculate" to see recommendations.</p>
-</div>
-</div>
+                <div class="detailed-results">
+                    <div class="result-item">
+                        <div class="result-label">
+                            <i class="fas fa-water"></i> Actual Gradient (i_actual)
+                        </div>
+                        <div class="result-value" id="iActual">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <i class="fas fa-exclamation-triangle"></i> Critical Gradient (i_critical)
+                        </div>
+                        <div class="result-value" id="iCritical">-</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <i class="fas fa-tint"></i> Flow Rate (Q)
+                        </div>
+                        <div class="result-value" id="flowRate">-</div>
+                    </div>
+                </div>
 
-<!-- Gradient Visualization -->
-<div class="chart-section card">
-<div class="chart-header">
-<h3><i class="fas fa-chart-line"></i> Gradient Comparison</h3>
-<div class="chart-actions">
-<button class="btn-chart-action" onclick="toggleChartType()">
-<i class="fas fa-exchange-alt"></i> Switch View
-</button>
-</div>
-</div>
-<div class="chart-container">
-<canvas id="gradientChart"></canvas>
-</div>
-</div>
+                <div class="recommendations" id="recommendations">
+                    <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                    <p>Enter parameters and click "Calculate" to see recommendations.</p>
+                </div>
+            </div>
 
-<!-- Sensitivity Analysis -->
-<div class="sensitivity-section card">
-<h3><i class="fas fa-chart-bar"></i> Sensitivity Analysis</h3>
-<div class="sensitivity-controls">
-<label>Vary Δh: <span id="deltaHValue">8.5</span> m</label>
-<input type="range" id="sensitivitySlider" min="1" max="20" value="8.5" step="0.1">
-</div>
-<div class="chart-container">
-<canvas id="sensitivityChart"></canvas>
-</div>
-</div>
-</div>
-</div>
+            <!-- Charts Section -->
+            <div class="chart-section card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-bar"></i> Gradient Comparison</h3>
+                    <div class="chart-actions">
+                        <button class="btn-chart-action" onclick="toggleChartType()">
+                            <i class="fas fa-exchange-alt"></i> Switch View
+                        </button>
+                        <a href="#report" class="btn-chart-action">
+                            <i class="fas fa-file-pdf"></i> Generate Report
+                        </a>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="gradientChart"></canvas>
+                </div>
+            </div>
 
-<!-- Report Modal -->
-<div id="reportModal" class="modal">
-<div class="modal-content">
-<div class="modal-header">
-<h3><i class="fas fa-file-pdf"></i> Generate Report</h3>
-<button class="modal-close">&times;</button>
-</div>
-<div class="modal-body">
-<div class="report-options">
-<div class="option">
-<input type="checkbox" id="includeInputs" checked>
-<label for="includeInputs">Include Input Parameters</label>
-</div>
-<div class="option">
-<input type="checkbox" id="includeResults" checked>
-<label for="includeResults">Include Analysis Results</label>
-</div>
-<div class="option">
-<input type="checkbox" id="includeCharts" checked>
-<label for="includeCharts">Include Charts & Graphs</label>
-</div>
-</div>
-<button class="btn btn-primary" onclick="generatePDFReport()">
-<i class="fas fa-download"></i> Download PDF Report
-</button>
-</div>
-</div>
-</div>
+            <!-- Sensitivity Analysis -->
+            <div class="sensitivity-section card">
+                <h3><i class="fas fa-chart-line"></i> Sensitivity Analysis</h3>
+                <p>How safety factor changes with hydraulic head difference (Δh):</p>
+                <div class="chart-container">
+                    <canvas id="sensitivityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script src="script.js"></script>
+    <!-- Report Modal -->
+    <div class="modal" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-pdf"></i> Generate Report</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Select what to include in the report:</p>
+                <div class="report-options">
+                    <div class="option">
+                        <input type="checkbox" id="includeInputs" checked>
+                        <label for="includeInputs">Input Parameters</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="includeResults" checked>
+                        <label for="includeResults">Calculation Results</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="includeCharts">
+                        <label for="includeCharts">Charts & Diagrams</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="includeRecommendations" checked>
+                        <label for="includeRecommendations">Recommendations</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="generatePDFReport()" style="width: 100%;">
+                    <i class="fas fa-download"></i> Generate and Download Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
